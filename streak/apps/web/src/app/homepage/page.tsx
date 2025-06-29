@@ -1,5 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { FireIcon, UserIcon, TargetIcon, NotificationBellIcon } from "@/components/icons/index";
+import { ActivityCalendar } from "react-activity-calendar";
 
 export default function Homepage() {
     // placeholder data
@@ -9,6 +10,16 @@ export default function Homepage() {
         { id: 1, label: "Plan the non-negotiable features", completed: false },
         { id: 2, label: "Define tech stack", completed: false },
         { id: 3, label: "Write down use cases", completed: false }
+    ];
+    // activity data; count is for the number of activities done; level is for the color intensity (0-no activity; 1-some activity; 2-4-more activity)
+    const activityData = [
+        { date: "2025-01-01", count: 0, level: 0 },
+        { date: "2025-06-16", count: 1, level: 1 },
+        { date: "2025-06-17", count: 2, level: 2 },
+        { date: "2025-06-18", count: 3, level: 3 },
+        { date: "2025-06-19", count: 4, level: 4 },
+        { date: "2025-06-29", count: 0, level: 0 },
+        // { date: "2025-12-31", count: 0, level: 0 },
     ];
 
     return (
@@ -34,8 +45,8 @@ export default function Homepage() {
                     <h2 className="text-center text-2xl font-black md:text-[32px] ">Goal: {goal.title}</h2>
 
                     {/* Github Activity Tracker Placeholder */}
-                    <div className="flex h-36 w-full items-center justify-center rounded-lg bg-gray-200 md:h=[140px]">
-                        <p className="text-gray-500">Github Activity Tracker</p>
+                    <div className="flex h-auto w-auto items-center justify-center rounded-lg bg-gray-200 md:h=[140px]">
+                       <ActivityCalendar data={activityData} theme={{ light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],  dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"] }} blockSize={10} blockMargin={2} weekStart={0} />
                     </div>
 
                     {/* Tasks for today */}
