@@ -1,10 +1,13 @@
+"use client"
+
 import { Input } from "@/components/ui/input";
 import { FireIcon, UserIcon } from "@/components/icons/index";
+import { authClient } from "@/lib/auth-client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // return the goalSettingPage
 export default function GoalSettingPage() {
-  // TODO: display the actual username
-  const user = { name: "user" };
+  const { data: session, isPending } = authClient.useSession();
 
   return (
     <div className="flex min-h-screen flex-col bg-white p-4 text-black md:p-8">
@@ -17,9 +20,25 @@ export default function GoalSettingPage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <p className="hidden text-xs font-normal sm:block">Welcome, {user.name}!</p>
-          <UserIcon className="h-8 w-8" />
-        </div>  
+          {isPending ? (
+            <Skeleton className="h-4 w-24" />
+          ) : (
+            <p className="hidden text-xs font-normal sm:block">
+              Welcome, {session?.user.name || "Guest"}!
+            </p>
+          )}
+          {isPending ? (
+            <Skeleton className="h-8 w-8 rounded-full" />
+          ) : session?.user.image ? (
+            <img 
+              src={session.user.image} 
+              alt="Profile" 
+              className="h-8 w-8 rounded-full"
+            />
+          ) : (
+            <UserIcon className="h-8 w-8" />
+          )}
+        </div> 
       </header>
 
       <main className="flex flex-1 flex-col items-center justify-center gap-6 text-center md:gap-8">

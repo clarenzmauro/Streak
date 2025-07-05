@@ -1,10 +1,13 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { FireIcon, UserIcon } from "@/components/icons/index";
+import { authClient } from "@/lib/auth-client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // return the goalFrequencyPage
 export default function GoalFrequencyPage() {
-    // TODO: display the actual user name
-    const user =  { name: "user" };
+    const { data: session, isPending } = authClient.useSession();
 
     // define the frequencies
     const frequencyOptions = ["Daily", "Weekly", "Monthly"];
@@ -20,8 +23,24 @@ export default function GoalFrequencyPage() {
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <p className="hidden text-xs font-normal sm:block">Welcome, {user.name}!</p>
-                    <UserIcon className="h-8 w-8"/>
+                    {isPending ? (
+                        <Skeleton className="h-4 w-24" />
+                    ) : (
+                        <p className="hidden text-xs font-normal sm:block">
+                            Welcome, {session?.user.name || "Guest"}!
+                        </p>
+                    )}
+                    {isPending ? (
+                        <Skeleton className="h-8 w-8 rounded-full" />
+                    ) : session?.user.image ? (
+                        <img 
+                            src={session.user.image} 
+                            alt="Profile" 
+                            className="h-8 w-8 rounded-full"
+                        />
+                    ) : (
+                        <UserIcon className="h-8 w-8" />
+                    )}
                 </div>
             </header>
 

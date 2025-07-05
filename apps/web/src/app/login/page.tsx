@@ -1,8 +1,27 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { FireIcon, LoginIcon } from "@/components/icons/index";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // return the login page
 export default function LoginPage() {
+  const router = useRouter();
+  
+  const handleGoogleSignIn = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "http://localhost:3001/goal-setting",
+      });
+    } catch (error) {
+      toast.error("Failed to sign in with Google");
+      console.error("Google sign-in error:", error);
+    }
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col bg-white text-black">
       <header className="absolute top-0 left-0 p-4 md:p-8">
@@ -17,7 +36,7 @@ export default function LoginPage() {
 
       <main className="flex flex-1 flex-col items-center justify-center space-y-8 px-4">
         <LoginIcon className="h-24 w-24 md:h-32 md:w-32" />
-        <Button className="h-16 w-full max-w-sm rounded-full bg-[#D9D9D9] text-xl font-normal text-black hover:bg-gray-300 md:h-[100px] md:w-[500px] md:rounded-[50px] md:text-4xl" variant="secondary">
+        <Button onClick={handleGoogleSignIn} className="h-16 w-full max-w-sm rounded-full bg-[#D9D9D9] text-xl font-normal text-black hover:bg-gray-300 md:h-[100px] md:w-[500px] md:rounded-[50px] md:text-4xl" variant="secondary">
           Login with Google
         </Button>
       </main>
